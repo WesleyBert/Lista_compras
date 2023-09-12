@@ -5,7 +5,19 @@ const form = document.getElementById("form-itens");
 const itensInput = document.getElementById("receber-item");
 const ulItens = document.getElementById("lista-de-itens");
 const ulItensComprados = document.getElementById('itens-comprados');
+const listaRecuperada = localStorage.getItem('listaCompras');
 
+function armazenaLocalStorage() {
+    localStorage.setItem('listaCompras', JSON.stringify(listaCompras));
+ }
+
+if (listaRecuperada) {
+    listaCompras = JSON.parse(listaRecuperada);
+    mostrarItens()
+} else {
+    listaCompras = []
+}
+ 
 form.addEventListener("submit", function (event){
     event.preventDefault();
     salvarItens();
@@ -92,14 +104,16 @@ function mostrarItens() {
             itemEditar = evento.target.parentElement.parentElement.getAttribute('data-value');
             mostrarItens();
             alert('Edição liberada!')
-      })
-    })
-    
+        })
+    });
+    armazenaLocalStorage()
+
+
 }
    function salvarEdicao() {
        const itemEditado = document.querySelector(`[data-value="${itemEditar}"] input[type="text"]`)
        listaCompras[itemEditar].valor = itemEditado.value
-       console.log(listaCompras);
-        itemEditar = -1     
+       itemEditar = -1   
+       mostrarItens()
    }
 
